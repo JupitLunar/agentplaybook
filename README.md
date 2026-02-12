@@ -6,6 +6,9 @@ Playbooks for running Clawdbot/OpenClaw-style agents: browser automation templat
 - `playbooks/`
   - `browser-agent-browser-template.md`
   - `clawdhub-cli-install-update-checklist.md`
+  - `x-intelligence-reliability-playbook.md`
+  - `clawhub-install-safety-flow.md`
+  - `skill-productionization-checklist.md`
 
 ## Conventions
 - Prefer reproducible, copy/paste-able steps.
