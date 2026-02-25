@@ -4,17 +4,16 @@
 services:
   - type: web
     name: agent-layer
-    runtime: node
+    runtime: docker
     rootDir: agent-layer
     region: oregon
     plan: free
-    buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 10000
+        value: 8080
       - key: API_KEY
         generateValue: true
       - key: DATABASE_URL

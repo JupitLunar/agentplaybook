@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "agents": [
+    {
+      "id": "agent_oo",
+      "currentTaskId": null,
+      "updatedAt": "2026-02-10T21:22:25.072Z",
+      "sessionKey": "agent:main:main",
+      "name": "Main"
+    },
+    {
+      "id": "agent_ss",
+      "currentTaskId": null,
+      "updatedAt": "2026-02-10T21:11:45.913Z",
+      "sessionKey": "agent:ss:main"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "title": "hey.... how are yaaaaaa",
+      "status": "assigned",
+      "assigneeIds": [
+        "agent_oo"
+      ],
+      "createdAt": "2026-02-10T19:55:26.542Z",
+      "updatedAt": "2026-02-10T19:55:26.543Z",
+      "dispatch": {
+        "state": "ready",
+        "readyAt": "2026-02-10T19:55:26.543Z",
+        "runId": null,
+        "claimedAt": null,
+        "dispatchedAt": null,
+        "finishedAt": null,
+        "followupRequestedAt": null,
+        "error": null,
+        "lastProgressAt": "2026-02-10T19:55:26.543Z"
+      }
+    },
+    {
+      "id": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "title": "hello everyone",
+      "status": "assigned",
+      "assigneeIds": [
+        "agent_ss"
+      ],
+      "createdAt": "2026-02-10T21:04:10.448Z",
+      "updatedAt": "2026-02-10T21:04:10.450Z",
+      "dispatch": {
+        "state": "ready",
+        "readyAt": "2026-02-10T21:04:10.449Z",
+        "runId": null,
+        "claimedAt": null,
+        "dispatchedAt": null,
+        "finishedAt": null,
+        "followupRequestedAt": null,
+        "error": null,
+        "lastProgressAt": "2026-02-10T21:04:10.449Z"
+      }
+    }
+  ],
+  "messages": [
+    {
+      "id": "fe008966-1348-4ece-968f-c7ba83350a09",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "user",
+      "content": "heyy",
+      "createdAt": "2026-02-10T19:57:27.892Z"
+    },
+    {
+      "id": "0d247b47-7e69-4dbe-94b2-5a23ef54a359",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "system",
+      "content": "Notifying assignees: agent_oo",
+      "createdAt": "2026-02-10T19:57:27.894Z"
+    },
+    {
+      "id": "8e87eeca-a6d0-4c20-9d4b-3f0ef8bc2e93",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "system",
+      "content": "Running agent agent_oo…",
+      "createdAt": "2026-02-10T19:57:27.896Z"
+    },
+    {
+      "id": "426f8747-b24c-45da-afa4-829853843f2b",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "system",
+      "content": "Agent agent_oo failed: clawdbot not found",
+      "createdAt": "2026-02-10T19:57:27.899Z"
+    },
+    {
+      "id": "f0125e2f-be07-41cf-8f78-71912ff5dca3",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "user",
+      "content": "heyyy",
+      "createdAt": "2026-02-10T21:02:31.507Z"
+    },
+    {
+      "id": "710b25e2-6d02-420d-87b8-c485d97bbaf2",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "system",
+      "content": "Notifying assignees: agent_oo",
+      "createdAt": "2026-02-10T21:02:31.509Z"
+    },
+    {
+      "id": "1923f237-b5dd-4c5f-9b15-e237880f8ed0",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "system",
+      "content": "Running agent agent_oo…",
+      "createdAt": "2026-02-10T21:02:31.511Z"
+    },
+    {
+      "id": "0caa9630-8907-4e54-b357-287212c0cfcd",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "fromAgentId": "system",
+      "content": "Agent agent_oo failed: clawdbot not found",
+      "createdAt": "2026-02-10T21:02:31.515Z"
+    },
+    {
+      "id": "9963c695-440c-416c-abe3-516487c9c4af",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "user",
+      "content": "hello everyone",
+      "createdAt": "2026-02-10T21:04:17.578Z"
+    },
+    {
+      "id": "462a89c9-73ad-47ba-bd9d-58f0f6c58c1c",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "system",
+      "content": "Notifying assignees: agent_ss",
+      "createdAt": "2026-02-10T21:04:17.580Z"
+    },
+    {
+      "id": "ef6cefe2-0474-48d8-8299-d08732bd08bd",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "system",
+      "content": "Running agent agent_ss…",
+      "createdAt": "2026-02-10T21:04:17.582Z"
+    },
+    {
+      "id": "fbf83bef-88e3-4a6e-b85b-fbb4da24b667",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "system",
+      "content": "Agent agent_ss failed: clawdbot not found",
+      "createdAt": "2026-02-10T21:04:17.586Z"
+    },
+    {
+      "id": "04e43b0e-8dc8-42a3-9d45-b95a1c37da11",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "user",
+      "content": "hi",
+      "createdAt": "2026-02-10T21:11:16.349Z"
+    },
+    {
+      "id": "7fdabc8f-8ca2-43e5-8df7-784a619fc3e7",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "system",
+      "content": "Notifying assignees: agent_ss",
+      "createdAt": "2026-02-10T21:11:16.351Z"
+    },
+    {
+      "id": "3fa89f70-f911-4e87-9aaa-63cadbf6710a",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "system",
+      "content": "Running agent agent_ss…",
+      "createdAt": "2026-02-10T21:11:16.352Z"
+    },
+    {
+      "id": "5237448f-d118-4628-828a-03e701ed624d",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "fromAgentId": "agent_ss",
+      "content": "- Hi!  \n- Hello everyone 👋  \n- Hope you’re all doing well.  \n- What’s everyone up to today?",
+      "createdAt": "2026-02-10T21:11:21.379Z"
+    }
+  ],
+  "assignments": [],
+  "activities": [
+    {
+      "id": "765e276a-d590-4fc7-8749-ff560f1a6d71",
+      "type": "gateway_chat",
+      "agentId": "oo",
+      "taskId": "session:agent:main:main",
+      "message": "ack",
+      "createdAt": "2026-02-10T19:54:56.826Z"
+    },
+    {
+      "id": "144ea83a-c98a-44a3-a609-d34619d516f4",
+      "type": "comment_added",
+      "agentId": "user",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "message": "user: heyy",
+      "createdAt": "2026-02-10T19:57:27.893Z"
+    },
+    {
+      "id": "b4cf41b5-d8d1-488b-8eb3-5d8385e46010",
+      "type": "gateway_chat",
+      "agentId": "oo",
+      "taskId": "session:agent:main:main",
+      "message": "ack",
+      "createdAt": "2026-02-10T20:53:24.496Z"
+    },
+    {
+      "id": "be60dc16-2d46-4d17-8c24-c593d67eac59",
+      "type": "gateway_chat",
+      "agentId": "oo",
+      "taskId": "session:agent:main:main",
+      "message": "ack",
+      "createdAt": "2026-02-10T20:57:40.426Z"
+    },
+    {
+      "id": "0123fdf0-6831-4789-a3d3-b3408fa2b871",
+      "type": "gateway_chat",
+      "agentId": "oo",
+      "taskId": "session:agent:main:main",
+      "message": "ack",
+      "createdAt": "2026-02-10T21:02:20.282Z"
+    },
+    {
+      "id": "c0828175-a3a4-43c9-9fd9-36448d3ae85f",
+      "type": "comment_added",
+      "agentId": "user",
+      "taskId": "f89c7b1e-1714-4508-b2c3-eeff252e7505",
+      "message": "user: heyyy",
+      "createdAt": "2026-02-10T21:02:31.508Z"
+    },
+    {
+      "id": "26cb8264-3067-482d-8f76-102e1d3fb761",
+      "type": "comment_added",
+      "agentId": "user",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "message": "user: hello everyone",
+      "createdAt": "2026-02-10T21:04:17.579Z"
+    },
+    {
+      "id": "10b6bead-724b-4f10-9156-210cb1b1a706",
+      "type": "gateway_chat",
+      "agentId": "oo",
+      "taskId": "session:agent:main:main",
+      "message": "ack",
+      "createdAt": "2026-02-10T21:11:09.801Z"
+    },
+    {
+      "id": "3d0cf584-3a2f-480b-8e4c-6fb5a8e12951",
+      "type": "comment_added",
+      "agentId": "user",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "message": "user: hi",
+      "createdAt": "2026-02-10T21:11:16.350Z"
+    },
+    {
+      "id": "f9a3f5c5-2a0a-4b8f-8d20-9f5c012de188",
+      "type": "comment_added",
+      "agentId": "agent_ss",
+      "taskId": "17d53a0b-6e95-400a-97a8-5e43c04d0d71",
+      "message": "agent_ss: - Hi!  \n- Hello everyone 👋  \n- Hope you’re all doing well.  \n- What’s everyone up to today?",
+      "createdAt": "2026-02-10T21:11:21.381Z"
+    },
+    {
+      "id": "6f6eee83-5ad4-4caf-8e3f-6da355fedcca",
+      "type": "gateway_chat",
+      "agentId": "ss",
+      "taskId": "session:agent:ss:main",
+      "message": "- Hi!  \n- Hello everyone 👋  \n- Hope you’re all doing well.  \n- What’s everyone up to today?",
+      "createdAt": "2026-02-10T21:11:21.540Z"
+    }
+  ],
+  "documents": [],
+  "notifications": []
+}  "documents": [],
+  "notifications": []
+}

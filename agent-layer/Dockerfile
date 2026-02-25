@@ -14,11 +14,12 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
-# Create data directory for SQLite
-RUN mkdir -p /data && chown -R node:node /data
-
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nodejs -u 1001
+
+# Create data directory for SQLite with correct permissions
+RUN mkdir -p /data && chown -R nodejs:nodejs /data
+
 USER nodejs
 
 EXPOSE 8080

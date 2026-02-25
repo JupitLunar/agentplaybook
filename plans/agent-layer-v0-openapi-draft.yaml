@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+  title: JupitLunar Agent Gateway (v0)
+  version: 0.1.0
+  description: |
+    A machine-facing gateway that exposes Jing's site portfolio (starting with Alberta directories)
+    as a unified, agent-usable API.
+
+    Design goals:
+    - Stable, low-friction HTTP interface any agent/runtime can call.
+    - Normalized schemas (no HTML scraping required).
+    - Region + vertical faceting (Alberta Graph).
+    - Actions start at B0 (lead capture / shortlist request), later expand to concierge + integrations.
+servers:
+  - url: https://api.jupitlunar.com
+    description: Production
+  - url: https://api-staging.jupitlunar.com
+    description: Staging
+
+tags:
+  - name: search
+  - name: places
+  - name: actions
+
+paths:
+  /v1/search:
+    get:
+      tags: [search]
+      summary: Search across the Alberta Graph
+      description: |
+        Returns normalized search results across places/listings and content.
+        All requests should be scoped by region + vertical.
+      parameters:
+        - name: vertical
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Vertical'
+        - name: region
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/RegionScope'
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 200
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Opaque pagination cursor.
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+
+  /v1/places/{place_id}:
+    get:
+      tags: [places]
+      summary: Get a canonical place/listing
+      parameters:
+        - name: place_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/PlaceId'
+      responses:
+        '200':
+          description: Place details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+        '404':
+          description: Not found
+
+  /v1/actions/{action}:
+    post:
+      tags: [actions]
+      summary: Perform an action (B0+)
+      description: |
+        v0 actions are primarily lead capture / shortlist request.
+        Future actions include concierge booking requests and merchant-integrated actions.
+      parameters:
+        - name: action
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ActionType'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionRequest'
+      responses:
+        '200':
+          description: Action result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResult'
+
+components:
+  schemas:
+    Vertical:
+      type: string
+      enum: [wellness, travel, clinic, playground]
+
+    RegionScope:
+      type: object
+      additionalProperties: false
+      properties:
+        province:
+          type: string
+          description: Province code (e.g., AB)
+          example: AB
+        city:
+          type: string
+          description: City slug
+          example: calgary
+        neighborhood:
+          type: string
+          description: Neighborhood slug (optional)
+          example: beltline
+      required: [province]
+
+    PlaceId:
+      type: string
+      description: Stable global place id.
+      example: plc_ab_01hxyz...
+
+    SourceRef:
+      type: object
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+          enum: [google_places, osm, official_site, manual, partner]
+        url:
+          type: string
+          format: uri
+        external_id:
+          type: string
+      required: [kind]
+
+    Place:
+      type: object
+      additionalProperties: false
+      properties:
+        place_id:
+          $ref: '#/components/schemas/PlaceId'
+        name:
+          type: string
+        verticals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vertical'
+        region:
+          $ref: '#/components/schemas/RegionScope'
+        address:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        phone:
+          type: string
+        website:
+          type: string
+          format: uri
+        booking_url:
+          type: string
+          format: uri
+          description: Direct booking link if known.
+        rating:
+          type: number
+        review_count:
+          type: integer
+        last_verified:
+          type: string
+          format: date-time
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceRef'
+      required: [place_id, name, verticals, region, sources]
+
+    SearchResult:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum: [place, guide, collection]
+        place:
+          $ref: '#/components/schemas/Place'
+        score:
+          type: number
+        highlights:
+          type: array
+          items:
+            type: string
+      required: [type]
+
+    SearchResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+        next_cursor:
+          type: string
+          nullable: true
+      required: [results]
+
+    ActionType:
+      type: string
+      enum: [lead_get_matched, lead_request_shortlist, lead_contact_business]
+
+    ActionRequest:
+      type: object
+      additionalProperties: true
+      description: |
+        Action payloads are action-specific in v0.
+        Always include vertical + region + user contact.
+      properties:
+        vertical:
+          $ref: '#/components/schemas/Vertical'
+        region:
+          $ref: '#/components/schemas/RegionScope'
+        email:
+          type: string
+        phone:
+          type: string
+        preferences:
+          type: object
+          additionalProperties: true
+      required: [vertical, region, email]
+
+    ActionResult:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum: [accepted, queued, failed]
+        action_id:
+          type: string
+          description: Stable id for tracking.
+        message:
+          type: string
+      required: [status, action_id]
