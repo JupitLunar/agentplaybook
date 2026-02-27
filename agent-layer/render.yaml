@@ -1,4 +1,5 @@
-# Agent Layer - Render Deployment
+# Agent Layer v2 - Render Deployment
+# MCP-native Alberta business directory for AI agents
 
 services:
   - type: web
@@ -6,20 +7,28 @@ services:
     runtime: node
     region: oregon
     plan: free
+    # Build commands
     buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    startCommand: node dist/server-v2.js
+    
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-      - key: API_KEY
-        generateValue: true
-      - key: DATABASE_URL
-        value: sqlite:///data/agent_layer.db
-    disk:
-      name: agent-data
-      mountPath: /data
-      sizeGB: 1
-
+      - key: HOST
+        value: 0.0.0.0
+      # Supabase configuration
+      - key: SUPABASE_URL
+        value: https://lalpxtoxziyjibifibsx.supabase.co
+      - key: SUPABASE_SERVICE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhbHB4dG94eml5amliaWZpYnN4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzYyNTkyMywiZXhwIjoyMDY5MjAxOTIzfQ.RyLwb38dy5h1DM0jpR0KD_HHZhb6SshE3ZhMKdIWyyY
+      - key: LOG_LEVEL
+        value: info
+      - key: CORS_ORIGIN
+        value: '*'
+      - key: RATE_LIMIT
+        value: '100'
+    
+    # Health check endpoint
     healthCheckPath: /health
