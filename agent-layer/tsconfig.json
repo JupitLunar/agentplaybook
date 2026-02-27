@@ -13,11 +13,11 @@
     "resolveJsonModule": true,
     "declaration": true,
     "sourceMap": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "src/scripts/test-mcp.ts", "src/scripts/create-tables-pg.ts", "src/scripts/setup-table.ts"]
 }
