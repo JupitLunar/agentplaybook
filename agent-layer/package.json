@@ -11,8 +11,9 @@
     "db:migrate": "tsx scripts/migrate-sqlite.ts",
     "db:seed": "tsx scripts/seed.ts",
     "sync": "tsx scripts/sync-sites.ts",
-    "migrate:playgrounds": "tsx src/scripts/migrate-playgrounds.ts",
-    "test": "tsx src/scripts/test-mcp.ts"
+    "migrate:playgrounds": "tsx scripts/migrate-playgrounds.ts",
+    "test": "tsx src/scripts/test-mcp.ts",
+    "test:api": "tsx scripts/test-api.ts"
   },
   "dependencies": {
     "@fastify/cors": "^10.0.0",

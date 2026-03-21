@@ -210,6 +210,53 @@ function transformPlaygroundSQLite(row: any): UnifiedPlace {
 }
 
 /**
+ * Transform SQLite wellness row to UnifiedPlace
+ */
+function transformWellnessSQLite(row: any): UnifiedPlace {
+  const attributes: WellnessAttributes = {
+    services: row.services ? row.services.split(',') : [],
+    acceptsInsurance: row.accepts_insurance === 1,
+    directBilling: row.direct_billing === 1
+  };
+
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    vertical: 'wellness',
+    category: row.category || 'wellness-centre',
+    location: {
+      address: row.address,
+      city: row.city,
+      province: row.province || 'AB',
+      country: 'CA',
+      coordinates: row.lat && row.lng ? { lat: row.lat, lng: row.lng } : undefined
+    },
+    contact: {
+      phone: row.phone,
+      email: row.email,
+      website: row.website
+    },
+    description: row.description,
+    images: [],
+    rating: row.rating,
+    reviewCount: 0,
+    attributes,
+    tags: row.tags ? row.tags.split(',') : [],
+    amenities: row.services ? row.services.split(',') : [],
+    source: {
+      type: 'sqlite',
+      table: 'wellness',
+      externalId: row.slug,
+      lastVerified: new Date(row.created_at),
+      claimed: false
+    },
+    createdAt: new Date(row.created_at),
+    updatedAt: new Date(row.created_at)
+  };
+}
+
+/**
  * Parse age range string like "0-12 years" to object
  */
 function parseAgeRange(range: string): { min: number; max?: number } {
@@ -254,9 +301,13 @@ export class DataService {
     vertical: VerticalType, 
     params: { location?: SearchIntent['location']; filters?: Record<string, any>; query?: string }
   ): Promise<{ places: UnifiedPlace[]; total: number }> {
-    // For playgrounds, try SQLite first (local fallback)
+    // For playgrounds and wellness, use SQLite (local storage)
     if (vertical === 'playground' && sqliteDb) {
       return this.searchPlaygroundsSQLite(params);
+    }
+    
+    if (vertical === 'wellness' && sqliteDb) {
+      return this.searchWellnessSQLite(params);
     }
     
     const table = VERTICAL_TABLES[vertical];
@@ -359,6 +410,64 @@ export class DataService {
   }
   
   /**
+   * Search wellness from SQLite
+   */
+  private searchWellnessSQLite(
+    params: { location?: SearchIntent['location']; filters?: Record<string, any>; query?: string }
+  ): { places: UnifiedPlace[]; total: number } {
+    if (!sqliteDb) {
+      return { places: [], total: 0 };
+    }
+    
+    try {
+      let sql = 'SELECT * FROM wellness WHERE 1=1';
+      const queryParams: any[] = [];
+      
+      // Apply location filter
+      if (params.location?.city) {
+        sql += ' AND LOWER(city) = LOWER(?)';
+        queryParams.push(params.location.city);
+      }
+      
+      // Apply text search
+      if (params.query) {
+        sql += ' AND (LOWER(name) LIKE ? OR LOWER(address) LIKE ? OR LOWER(services) LIKE ?)';
+        const searchTerm = `%${params.query.toLowerCase()}%`;
+        queryParams.push(searchTerm, searchTerm, searchTerm);
+      }
+      
+      // Apply filters
+      if (params.filters?.acceptsInsurance) {
+        sql += ' AND accepts_insurance = 1';
+      }
+      if (params.filters?.directBilling) {
+        sql += ' AND direct_billing = 1';
+      }
+      
+      sql += ' ORDER BY rating DESC';
+      
+      // Apply limit
+      const limit = params.filters?.limit || 20;
+      sql += ' LIMIT ?';
+      queryParams.push(limit);
+      
+      const stmt = sqliteDb.prepare(sql);
+      const rows = stmt.all(...queryParams);
+      
+      const places = rows.map((row: any) => transformWellnessSQLite(row));
+      
+      // Get total count
+      const countStmt = sqliteDb.prepare('SELECT COUNT(*) as count FROM wellness');
+      const countResult = countStmt.get() as { count: number };
+      
+      return { places, total: countResult.count };
+    } catch (err) {
+      console.error('[DataService] SQLite wellness error:', err);
+      return { places: [], total: 0 };
+    }
+  }
+  
+  /**
    * Get place by ID
    */
   async getById(id: string, vertical?: VerticalType): Promise<UnifiedPlace | null> {
@@ -424,6 +533,22 @@ export class DataService {
     if (vertical === 'playground' && sqliteDb) {
       try {
         const stmt = sqliteDb.prepare('SELECT city, COUNT(*) as count FROM playgrounds GROUP BY city');
+        const rows = stmt.all() as Array<{ city: string; count: number }>;
+        const counts: Record<string, number> = {};
+        for (const row of rows) {
+          counts[row.city.toLowerCase()] = row.count;
+        }
+        return counts;
+      } catch (err) {
+        console.error('[DataService] SQLite getCityCounts error:', err);
+        return {};
+      }
+    }
+    
+    // For wellness, use SQLite
+    if (vertical === 'wellness' && sqliteDb) {
+      try {
+        const stmt = sqliteDb.prepare('SELECT city, COUNT(*) as count FROM wellness GROUP BY city');
         const rows = stmt.all() as Array<{ city: string; count: number }>;
         const counts: Record<string, number> = {};
         for (const row of rows) {
